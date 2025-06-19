@@ -31,5 +31,6 @@ a:visited {
 }
 
 a:hover {
+  color: green;
   text-decoration: none;
 }
