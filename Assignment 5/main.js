@@ -1,22 +1,15 @@
-// functionality for showing/hiding the comments section
-
 const showHideBtn = document.querySelector('.show-hide');
 const commentWrapper = document.querySelector('.comment-wrapper');
 
-commentWrapper.style.display = 'none';
+commentWrapper.hidden = true; // hide initially
+showHideBtn.setAttribute('aria-expanded', 'false');
 
 showHideBtn.onclick = function() {
-  let showHideText = showHideBtn.textContent;
-  if(showHideText === 'Show comments') {
-    showHideBtn.textContent = 'Hide comments';
-    commentWrapper.style.display = 'block';
-  } else {
-    showHideBtn.textContent = 'Show comments';
-    commentWrapper.style.display = 'none';
-  }
+  const isHidden = commentWrapper.hidden;
+  commentWrapper.hidden = !isHidden;
+  showHideBtn.textContent = isHidden ? 'Hide comments' : 'Show comments';
+  showHideBtn.setAttribute('aria-expanded', isHidden ? 'true' : 'false');
 };
-
-// functionality for adding a new comment via the comments form
 
 const form = document.querySelector('.comment-form');
 const nameField = document.querySelector('#name');
@@ -29,18 +22,21 @@ form.onsubmit = function(e) {
 };
 
 function submitComment() {
+  if (!nameField.value.trim() || !commentField.value.trim()) {
+    alert('Please enter your name and comment.');
+    return;
+  }
+
   const listItem = document.createElement('li');
   const namePara = document.createElement('p');
   const commentPara = document.createElement('p');
-  const nameValue = nameField.value;
-  const commentValue = commentField.value;
 
-  namePara.textContent = nameValue;
-  commentPara.textContent = commentValue;
+  namePara.textContent = nameField.value.trim();
+  commentPara.textContent = commentField.value.trim();
 
-  list.appendChild(listItem);
   listItem.appendChild(namePara);
   listItem.appendChild(commentPara);
+  list.appendChild(listItem);
 
   nameField.value = '';
   commentField.value = '';
